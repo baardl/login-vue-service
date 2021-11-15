@@ -110,21 +110,20 @@ describe('Login', () => {
 });
 
 describe('Login-host unreachable', () => {
-    let stub = MockAdapter;
+    let axiosMock = MockAdapter;
     const receivedData = { username: "username",
         accessToken: "accessToken12345",
         refreshToken: "refreshToken67890",
         tokenExpires: "2021-11-10T17:00:01:123Z" };
 
     before(() => {
-        stub = new MockAdapter(request);
-        stub.onGet(loginUrl, {
+        axiosMock = new MockAdapter(request);
+        axiosMock.onGet(loginUrl, {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
             },
         }).replyOnce(200, receivedData);
-        // replyOnce if you assume that your code sends a single request
     });
 
     it('Login fails', async () => {
@@ -136,11 +135,8 @@ describe('Login-host unreachable', () => {
             console.log("Error: ", error);
             expect(error.message).to.contain("ECONNREFUSED");
         }
-
-        // expect(response.status).to.be.equal(200);
-
     });
     after(() => {
-        stub.restore();
+        axiosMock.restore();
     });
 });
