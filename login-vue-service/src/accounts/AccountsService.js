@@ -31,17 +31,6 @@ export async function loginGet() {
 }
 
 export async function login(username, password) {
-// function login(username, password) {
-    /*
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-    };
-
-    let credentials = JSON.stringify({ username, password });
-   ll
-     */
     const credentials =  {
         username,
         password
@@ -68,20 +57,6 @@ export async function login(username, password) {
         throw new Error(`API ${error}`);
     });
 
-    /*
-    return fetch(`${config.apiUrl}/users/authenticate`, requestOptions)
-        .then(handleResponse)
-        .then(user => {
-            // login successful if there's a jwt token in the response
-            if (user.token) {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('user', JSON.stringify(user));
-            }
-
-            return user;
-        });
-
-     */
 }
 
 function logout() {
@@ -99,8 +74,6 @@ export async function main() {
             KEY: secretKey,
         },
     });
-
-    // response logic
 
     return response;
 }
