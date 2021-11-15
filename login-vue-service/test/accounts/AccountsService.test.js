@@ -3,7 +3,6 @@ import MockAdapter from 'axios-mock-adapter';
 import axios from "axios";
 import * as assert from "assert";
 import {login, loginUrl, main, secretKey, sum, URL} from "../../src/accounts/AccountsService.js";
-// import {sum} from "../../src/accounts/AccountsService.js";
 import {expect} from 'chai';
 
 import request from '../../src/request/request.js';
@@ -17,28 +16,26 @@ describe('AccountsService', function() {
 });
 describe('Request test', () => {
     // let stub: MockAdapter;
-    let stub = MockAdapter;
+    let axiosMock = MockAdapter;
     const receivedData = { data: 'data' };
 
     before(() => {
-        stub = new MockAdapter(request);
-        stub.onGet(URL, {
+        axiosMock = new MockAdapter(request);
+        axiosMock.onGet(URL, {
             headers: {
                 KEY: secretKey,
             },
         }).replyOnce(200, receivedData);
-        // replyOnce if you assume that your code sends a single request
     });
 
     it('test', async () => {
         const response = await main();
-
         expect(response.status).to.be.equal(200);
         expect(response.data).to.be.deep.equal(receivedData);
     });
 
     after(() => {
-        stub.restore();
+        axiosMock.restore();
     });
 });
 
@@ -48,7 +45,6 @@ describe('Login', () => {
         accessToken: "accessToken12345",
         refreshToken: "refreshToken67890",
         tokenExpires: "2021-11-10T17:00:01:123Z" };
-    // const mockAxios = axios.create();
 
     before(() => {
         axiosMock = new MockAdapter(axios);
@@ -56,12 +52,9 @@ describe('Login', () => {
     });
 
     it('Login ok', async () => {
-
         const UserTokens = await login("username", "password");
-
         expect(UserTokens).to.be.deep.equal(receivedData);
     });
-
 
     after(() => {
         axiosMock.restore();
