@@ -2,6 +2,8 @@
 import axios from 'axios';
 import request from '../request/request.js';
 
+axios.create();
+
 export const name = 'AccountService';
 export const AccountsService = {
     login,
@@ -10,6 +12,24 @@ export const AccountsService = {
 export function sum(a, b) {
     return a+b;
 }
+
+export const loginUrl = '/api/v2/login';
+
+export async function loginGet() {
+    const headers = {
+        'Content-Type': 'application/json',
+    }
+    await axios.get(loginUrl,{headers:headers})
+        .then(result => {
+            console.log("Result: ", result);
+            return {};
+        })
+        .catch(error => {
+            console.error("Failed: ", error);
+            throw new Error(`API ${error}`);
+        });
+}
+
 export async function login(username, password) {
 // function login(username, password) {
     /*
@@ -30,7 +50,7 @@ export async function login(username, password) {
     const headers = {
         'Content-Type': 'application/json',
     }
-    await axios.post('/api/v2/login', JSON.stringify(credentials), {
+    return await axios.post(loginUrl, JSON.stringify(credentials), {
         headers: headers
     }).then(result => {
         let userTokens = result.data;
@@ -38,8 +58,7 @@ export async function login(username, password) {
             username: credentials.username,
             accessToken: userTokens.accessToken,
             refreshToken: userTokens.refreshToken,
-            tokenExpires: userTokens.expires
-
+            tokenExpires: userTokens.tokenExpires
         }
         return UserTokens;
         // TODO move commit('CURRENT_USER', UserTokens);
