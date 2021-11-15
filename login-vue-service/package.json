@@ -2,9 +2,10 @@
   "name": "login-vue-service",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "test": "mocha",
+    "test": "mocha ./test/**/*.test.js",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
