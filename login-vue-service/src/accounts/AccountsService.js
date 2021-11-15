@@ -5,13 +5,12 @@ import request from '../request/request.js';
 export const name = 'AccountService';
 export const AccountsService = {
     login,
-    logout,
-    sum
+    logout
 };
-function sum(a, b) {
+export function sum(a, b) {
     return a+b;
 }
-function login({commit}, credentials) {
+export async function login(username, password) {
 // function login(username, password) {
     /*
     const requestOptions = {
@@ -21,27 +20,32 @@ function login({commit}, credentials) {
     };
 
     let credentials = JSON.stringify({ username, password });
-
+   ll
      */
-
-    console.log("Login using: ", JSON.stringify(credentials));
+    const credentials =  {
+        username,
+        password
+    }
+    console.log("Login credentials: ", JSON.stringify(credentials));
     const headers = {
         'Content-Type': 'application/json',
     }
-    axios.post('/api/v2/login', JSON.stringify(credentials), {
+    await axios.post('/api/v2/login', JSON.stringify(credentials), {
         headers: headers
     }).then(result => {
         let userTokens = result.data;
-        let User = {
+        let UserTokens = {
             username: credentials.username,
             accessToken: userTokens.accessToken,
             refreshToken: userTokens.refreshToken,
             tokenExpires: userTokens.expires
 
         }
-        commit('CURRENT_USER', User);
-        commit('SAVE_ALARMS');
+        return UserTokens;
+        // TODO move commit('CURRENT_USER', UserTokens);
+        // TODO move commit('SAVE_ALARMS');
     }).catch(error => {
+        console.error("Failed: ", error);
         throw new Error(`API ${error}`);
     });
 
