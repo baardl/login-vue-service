@@ -5,6 +5,13 @@
 npm install
 ```
 
+## Testing
+
+### Mocha for services/node
+```
+npm test
+```
+
 ### Compiles and hot-reloads for development
 ```
 npm run serve
