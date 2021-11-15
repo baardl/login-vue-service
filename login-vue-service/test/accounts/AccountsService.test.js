@@ -43,7 +43,7 @@ describe('Request test', () => {
 });
 
 describe('Login', () => {
-    let stub = MockAdapter;
+    let axiosMock = MockAdapter;
     const receivedData = { username: "username",
         accessToken: "accessToken12345",
         refreshToken: "refreshToken67890",
@@ -51,61 +51,20 @@ describe('Login', () => {
     // const mockAxios = axios.create();
 
     before(() => {
-        stub = new MockAdapter(axios);
-        stub.onPost(loginUrl).reply(200, receivedData);
-        /*
-        stub.onPost(loginUrl, {
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: {
-                username: "username",
-                password: "password"
-            }
-        }).reply(200, receivedData);
-
-         */
-        /*
-        stub.onGet( loginUrl, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            },
-        }).replyOnce(200, receivedData);
-        // replyOnce if you assume that your code sends a single request
-
-         */
+        axiosMock = new MockAdapter(axios);
+        axiosMock.onPost(loginUrl).reply(200, receivedData);
     });
-    /*
-    it("axios in test", async () => {
-        await axios.get(loginUrl).then(response => {
-            expect(response.status).to.be.equal(500);
-            console.log("Status: " + response.status);
-        });
-    });
-
-     */
 
     it('Login ok', async () => {
-        const credentials =  {
-            username: "username",
-            password: "password"
-        }
-        const headers = {
-            'Content-Type': 'application/json',
-        }
-        // const UserTokens = await axios.post(loginUrl, JSON.stringify(credentials), {
-        //     headers: headers
-        // });
+
         const UserTokens = await login("username", "password");
-         // const UserTokens = await loginGet();
-        // expect(response.status).to.be.equal(200);
+
         expect(UserTokens).to.be.deep.equal(receivedData);
     });
 
 
     after(() => {
-        stub.restore();
+        axiosMock.restore();
     });
 });
 
